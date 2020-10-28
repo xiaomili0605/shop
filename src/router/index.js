@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login/Login.vue'
 import Home from '../views/Home/Home.vue'
+import Welcome from '../views/Home/Welcome/Welcome.vue'
+import User from '../views/Home/User/User.vue'
 
 Vue.use(VueRouter)
 
@@ -17,14 +19,24 @@ const routes = [
   },
   {
     path: '/home',
-    component: Home
+    component: Home,
+    redirect: '/welcome',
+    children: [
+      {
+        path: '/welcome',
+        component: Welcome,
+      },
+      {
+        path: '/users',
+        component: User,
+      }
+    ]
   }
 ]
 
 const router = new VueRouter({
   routes
 })
-
 
 // to 要去往路由信息
 // from 要离开路由信息

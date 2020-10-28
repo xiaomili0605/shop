@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 // 跨域时处理
-const BASEURL = process.env.NODE_ENV === 'production' ? '' : '/api';
+const BASEURL = process.env.NODE_ENV === 'production' ? '' : '/api'
 axios.defaults.baseURL = BASEURL
 
-// 不跨越时直接写后台地址   
+// 不跨越时直接写后台地址
 axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
 axios.defaults.timeout = 3000
 
@@ -22,6 +22,7 @@ axios.defaults.transformRequest = function (data) {
 }
 
 axios.interceptors.request.use(function (config) {
+  config.headers.Authorization = window.sessionStorage.getItem('token')
   return config
 }, function (error) {
   return Promise.reject(error)
