@@ -11,4 +11,8 @@ export const getUsersInfo = id => axios.get(`users/${id}`)
 export const edit = (id, data) => axios.put(`users/${id}`, data)
 // 删除用户
 export const removeUser = id => axios.delete('users/' + id)
+// 获取角色列表
+export const getRoles = _ => axios.get('roles')
+// 分配角色
+export const setRoles = (id, data) => axios.put(`users/${id}/role`, data)
 

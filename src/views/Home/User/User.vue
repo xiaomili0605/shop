@@ -33,7 +33,7 @@
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row)"></el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUser(scope.row)"></el-button>
             <el-tooltip class="item" effect="dark" content="分配角色" placement="top" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="showSetRoleDialog(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -90,12 +90,32 @@
         <el-button type="primary" @click="editInfo">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 分配角色 dialog -->
+    <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%" @close="roleDialogColsed">
+      <el-form>
+        <div>
+          <p>当前的用户：{{ userInfo.username }}</p>
+          <p>当前的角色：{{ userInfo.role_name }}</p>
+          <p>
+            分配角色：
+            <el-select v-model="rolesSelectId" placeholder="请选择">
+              <el-option v-for="item in rolesList" :key="item.id" :label="item.roleName" :value="item.id"> </el-option>
+            </el-select>
+          </p>
+        </div>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { validateEmail, validateMobile } from '../../../plugins/validate.js'
-import { getUsers, editUserInfo, addUserInfo, getUsersInfo, edit, removeUser } from '../../../api/user.js'
+import { getUsers, editUserInfo, addUserInfo, getUsersInfo, edit, removeUser, getRoles, setRoles } from '../../../api/user.js'
 export default {
   name: '',
   data() {
@@ -153,6 +173,11 @@ export default {
         mobile: [{ validator: validMobile, trigger: 'blur', required: true }],
       },
       editDialogVisible: false,
+      setRoleDialogVisible: false,
+      userInfo: {},
+      rolesList: [],
+      rolesSelectId: ''
+
     }
   },
   created() {
@@ -248,6 +273,26 @@ export default {
           })
         })
     },
+    async showSetRoleDialog(row) {
+      this.userInfo = row
+      const res = await getRoles()
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.rolesList = res.data
+      console.log(this.rolesList)
+      this.setRoleDialogVisible = true
+    },
+    async saveRoleInfo() {
+      if (!this.rolesSelectId) return this.$message.error('请选择要分配的角色')
+      const res = await setRoles(this.userInfo.id, { rid: this.rolesSelectId })
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.$message.success(res.meta.msg)
+      this.getUserList()
+      this.setRoleDialogVisible = false
+    },
+    roleDialogColsed() {
+      this.rolesSelectId = ''
+      this.rolesList = []
+    }
   },
   components: {},
 }
