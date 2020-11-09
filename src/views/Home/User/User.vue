@@ -284,7 +284,10 @@ export default {
     async saveRoleInfo() {
       if (!this.rolesSelectId) return this.$message.error('请选择要分配的角色')
       const res = await setRoles(this.userInfo.id, { rid: this.rolesSelectId })
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      if (res.meta.status !== 200) {
+        this.setRoleDialogVisible = false
+        return this.$message.error(res.meta.msg)
+      }
       this.$message.success(res.meta.msg)
       this.getUserList()
       this.setRoleDialogVisible = false
