@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { getCate, addCate } from '../../api/categories.js'
+import { getCate, addCate } from '../../../api/categories.js'
 export default {
   name: '',
   data() {
