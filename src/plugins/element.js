@@ -32,6 +32,11 @@ import {
   Alert,
   Tabs,
   TabPane,
+  Steps,
+  Step,
+  Checkbox,
+  CheckboxGroup,
+  Upload,
   Message } from 'element-ui'
 
 Vue.use(Button)
@@ -65,6 +70,11 @@ Vue.use(Option)
 Vue.use(Alert)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
+Vue.use(Upload)
 // 把弹框组件挂载到 Vue 原型对象上，每个组件使用时 this.$message 即可
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

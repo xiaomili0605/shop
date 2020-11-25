@@ -3,8 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
-import ZkTable from 'vue-table-with-tree-grid'
-Vue.use(ZkTable)
+import './plugins/zkTable.js'
+import './plugins/filter.js'
+import './plugins/quill.js'
 
 Vue.config.productionTip = false
 
